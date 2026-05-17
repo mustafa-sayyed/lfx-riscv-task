@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "tier:1": "node ./src/parseExtension.js",
-    "tier:2": "node ./src/crossReference.js",
-    "tier:1:test": "node ./src/tests/parseExtension.test.js",
-    "tier:2:test": "node ./src/tests/crossReference.test.js",
+    "tier:1": "node ./src/tier1/tierOneTasks.js",
+    "tier:2": "node ./src/tier2/tierTwoTasks.js",
+    "test": "vitest",
+    "tier:1:test": "vitest run ./tests/tierOneTasks.test.js",
+    "tier:2:test": "vitest run ./tests/tierTwoTasks.test.js",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
@@ -26,6 +27,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
-    "vite": "^8.0.12"
+    "vite": "^8.0.12",
+    "vitest": "^3.2.4"
   }
 }
