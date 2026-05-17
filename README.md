@@ -51,7 +51,7 @@ Tier 2:
 npm run tier:2
 ```
 
-Run tests:
+## Run tests:
 
 ```bash
 npm test
