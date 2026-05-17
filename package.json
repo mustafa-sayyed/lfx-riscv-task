@@ -6,9 +6,9 @@
   "scripts": {
     "tier:1": "node ./src/tier1/tierOneTasks.js",
     "tier:2": "node ./src/tier2/tierTwoTasks.js",
-    "test": "vitest",
     "tier:1:test": "vitest run ./tests/tierOneTasks.test.js",
     "tier:2:test": "vitest run ./tests/tierTwoTasks.test.js",
+    "test": "vitest run",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
