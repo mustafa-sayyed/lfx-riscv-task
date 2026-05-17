@@ -4,36 +4,27 @@ import instructions from "./instr_dict.json" with { type: "json" };
 // Parse all instruction entries and group them by their extension tag(s)
 // Print a summary table showing each extension tag, its instruction count, and one example mnemonic
 
-const extensionList = Object.entries(instructions).reduce(
-	(acc, [mnemonic, instruction]) => {
-		for (const extension of instruction.extension) {
-			let isMnemonicExist = false;
+export function groupInstructionsByExtension(instructions) {
+	const extensionsMap = new Map();
 
-			isMnemonicExist = acc.some((data) => data?.name === extension);
+	for (const [mnemonic, instruction] of Object.entries(instructions)) {
+		const extensions =
+			Array.isArray(instruction.extension) ? instruction.extension : [];
 
-			if (isMnemonicExist) {
-				acc = acc.map((data) => {
-					if (data?.name === extension) {
-						return {
-							count: data.count++,
-							...data,
-						};
-					}
-					return data;
-				});
+		for (const ext of extensions) {
+			if (!extensionsMap.has(ext)) {
+				extensionsMap.set(ext, { name: ext, count: 1, example: mnemonic });
 			} else {
-				acc.push({
-					name: extension,
-					count: 1,
-					example: mnemonic,
-				});
+				const existing = extensionsMap.get(ext);
+				extensionsMap.set(ext, { ...existing, count: existing.count + 1 });
 			}
 		}
+	}
 
-		return acc;
-	},
-	[],
-);
+	return Array.from(extensionsMap.values());
+}
+
+const extensionGroup = groupInstructionsByExtension(instructions);
 
 // Print extension group data with count and example mnemonic
 console.log(
@@ -43,12 +34,13 @@ console.log(
 		"=".repeat(20) +
 		"\n".repeat(3),
 );
-for (const ext of extensionList) {
+for (const ext of extensionGroup) {
 	console.log(
-		`${ext?.name} | ${ext?.count} instruction | e.g. ${ext?.example}`,
+		`${ext.name} | ${ext.count} instruction | e.g. ${ext.example}`,
 	);
 }
 console.log("\n".repeat(3) + "=".repeat(80));
+
 
 
 
@@ -58,20 +50,24 @@ console.log("\n".repeat(3) + "=".repeat(80));
 
 // Task:
 // Identify and list any instructions that belong to more than one extension
+export function findMultiExtensionInstructions(instructions) {
+	return Object.entries(instructions).reduce(
+		(acc, [mnemonic, instruction]) => {
+			if (instruction.extension.length > 1) {
+				acc.push({
+					instructionName: mnemonic,
+					extensionCount: instruction.extension.length,
+				});
+			}
 
-const multiExtensionInstruction = Object.entries(
-	instructions,
-).reduce((acc, [mnemonic, instruction]) => {
-	if (instruction.extension.length > 1) {
-		acc.push({
-			instructionName: mnemonic,
-			extensionCount: instruction.extension.length,
-		});
-	}
+			return acc;
+		},
+		[],
+	);
 
-	return acc;
-}, []);
+}
 
+const multiExtensionInstructions = findMultiExtensionInstructions(instructions);
 
 console.log(
 	"\n".repeat(3) +
@@ -80,10 +76,7 @@ console.log(
 		"=".repeat(20) +
 		"\n".repeat(3),
 );
-for (const instr of multiExtensionInstruction) {
-	console.log(
-		`${instr.instructionName} belongs to ${instr.extensionCount}`,
-	);
+for (const instr of multiExtensionInstructions) {
+	console.log(`${instr.instructionName} belongs to ${instr.extensionCount} extensions`);
 }
 console.log("\n".repeat(3) + "=".repeat(80));
-
