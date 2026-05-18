@@ -9,6 +9,7 @@ This repo is my submission for the LFX RISC-V Mentorship Coding Challenge.
 - Detects instructions that belong to more than one extension.
 - Scans the RISC-V ISA Manual AsciiDoc sources and cross-references extension names with instr_dict.json.
 - Reports extensions only in JSON, only in the manual (AsciiDoc Sources), and a match summary.
+- Renders a React Flow graph of extensions that share at least one instruction (limited to the first 100 instructions).
 
 ## Project layout
 
@@ -49,6 +50,13 @@ Tier 2:
 
 ```bash
 npm run tier:2
+```
+
+Graph (React Flow UI):
+
+```bash
+npm run dev 
+#check http://localhost:5173
 ```
 
 ## Run tests:
@@ -100,6 +108,7 @@ b, e, g, j, n, p, sh, sm, ss, sv, zca, zcd, zce, ...
 - JSON extensions are normalized by splitting on '_' and removing rv/rv32/rv64 prefixes, then lowercasing.
 - Manual extensions are extracted from AsciiDoc macros of the form ext:Zba[] or extlink:Zicsr[].
 - The ISA manual sources are vendored under src/tier2/src to keep the project self-contained.
+- The graph visualization uses only the first 100 instructions to keep the layout readable.
 
 ## Scripts
 
